@@ -143,82 +143,80 @@
             }
         });
 
-        if ($$.length) {
-            var hideAddButton = !showAddButton(),
-                addButton, template;
-            if (options.formTemplate) {
-                // If a form template was specified, we'll clone it to generate new form instances:
-                template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
-                template.removeAttr('id').addClass(options.formCssClass + ' formset-custom-template');
-                template.find(childElementSelector).each(function() {
-                    updateElementIndex($(this), options.prefix, '__prefix__');
-                });
-                insertDeleteLink(template);
-            } else {
-                // Otherwise, use the last form in the formset; this works much better if you've got
-                // extra (>= 1) forms (thnaks to justhamade for pointing this out):
-                if (options.hideLastAddForm) $('.' + options.formCssClass + ':last').hide();
-                template = $('.' + options.formCssClass + ':last').clone(true).removeAttr('id');
-                template.find('input:hidden[id $= "-DELETE"]').remove();
-                // Clear all cloned fields, except those the user wants to keep (thanks to brunogola for the suggestion):
-                template.find(childElementSelector).not(options.keepFieldValues).each(function() {
-                    var elem = $(this);
-                    // If this is a checkbox or radiobutton, uncheck it.
-                    // This fixes Issue 1, reported by Wilson.Andrew.J:
-                    if (elem.is('input:checkbox') || elem.is('input:radio')) {
-                        elem.attr('checked', false);
-                    } else {
-                        elem.val('');
-                    }
-                });
-            }
-            // FIXME: Perhaps using $.data would be a better idea?
-            options.formTemplate = template;
-
-            var addButtonHTML = '<a class="' + options.addCssClass + '" href="javascript:void(0);">' + options.addText + '</a>';
-            if (options.addContainerClass) {
-                // If we have a specific container for the "add" button,
-                // place it as the last child of that container:
-                var addContainer = $('[class*="' + options.addContainerClass + '"');
-                addContainer.append(addButtonHTML);
-                addButton = addContainer.find('[class="' + options.addCssClass + '"]');
-            } else if ($$.is('TR')) {
-                // If forms are laid out as table rows, insert the
-                // "add" button in a new table row:
-                var numCols = $$.eq(0).children().length,   // This is a bit of an assumption :|
-                    buttonRow = $('<tr><td colspan="' + numCols + '">' + addButtonHTML + '</tr>').addClass(options.formCssClass + '-add');
-                $$.parent().append(buttonRow);
-                addButton = buttonRow.find('a');
-            } else {
-                // Otherwise, insert it immediately after the last form:
-                $$.filter(':last').after(addButtonHTML);
-                addButton = $$.filter(':last').next();
-            }
-
-            if (hideAddButton) addButton.hide();
-
-            addButton.click(function() {
-                var formCount = parseInt(totalForms.val()),
-                    row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
-                    buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this),
-                    delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
-                applyExtraClasses(row, formCount);
-                row.insertBefore(buttonRow).show();
-                row.find(childElementSelector).each(function() {
-                    updateElementIndex($(this), options.prefix, formCount);
-                });
-                totalForms.val(formCount + 1);
-                // Check if we're above the minimum allowed number of forms -> show all delete link(s)
-                if (showDeleteLinks()){
-                    $('a.' + delCssSelector).each(function(){$(this).show();});
+        var hideAddButton = !showAddButton(),
+            addButton, template;
+        if (options.formTemplate) {
+            // If a form template was specified, we'll clone it to generate new form instances:
+            template = (options.formTemplate instanceof $) ? options.formTemplate : $(options.formTemplate);
+            template.removeAttr('id').addClass(options.formCssClass + ' formset-custom-template');
+            template.find(childElementSelector).each(function() {
+                updateElementIndex($(this), options.prefix, '__prefix__');
+            });
+            insertDeleteLink(template);
+        } else {
+            // Otherwise, use the last form in the formset; this works much better if you've got
+            // extra (>= 1) forms (thnaks to justhamade for pointing this out):
+            if (options.hideLastAddForm) $('.' + options.formCssClass + ':last').hide();
+            template = $('.' + options.formCssClass + ':last').clone(true).removeAttr('id');
+            template.find('input:hidden[id $= "-DELETE"]').remove();
+            // Clear all cloned fields, except those the user wants to keep (thanks to brunogola for the suggestion):
+            template.find(childElementSelector).not(options.keepFieldValues).each(function() {
+                var elem = $(this);
+                // If this is a checkbox or radiobutton, uncheck it.
+                // This fixes Issue 1, reported by Wilson.Andrew.J:
+                if (elem.is('input:checkbox') || elem.is('input:radio')) {
+                    elem.attr('checked', false);
+                } else {
+                    elem.val('');
                 }
-                // Check if we've exceeded the maximum allowed number of forms:
-                if (!showAddButton()) buttonRow.hide();
-                // If a post-add callback was supplied, call it with the added form:
-                if (options.added) options.added(row);
-                return false;
             });
         }
+        // FIXME: Perhaps using $.data would be a better idea?
+        options.formTemplate = template;
+
+        var addButtonHTML = '<a class="' + options.addCssClass + '" href="javascript:void(0);">' + options.addText + '</a>';
+        if (options.addContainerClass) {
+            // If we have a specific container for the "add" button,
+            // place it as the last child of that container:
+            var addContainer = $('[class*="' + options.addContainerClass + '"');
+            addContainer.append(addButtonHTML);
+            addButton = addContainer.find('[class="' + options.addCssClass + '"]');
+        } else if ($$.is('TR')) {
+            // If forms are laid out as table rows, insert the
+            // "add" button in a new table row:
+            var numCols = $$.eq(0).children().length,   // This is a bit of an assumption :|
+                buttonRow = $('<tr><td colspan="' + numCols + '">' + addButtonHTML + '</tr>').addClass(options.formCssClass + '-add');
+            $$.parent().append(buttonRow);
+            addButton = buttonRow.find('a');
+        } else {
+            // Otherwise, insert it immediately after the last form:
+            $$.filter(':last').after(addButtonHTML);
+            addButton = $$.filter(':last').next();
+        }
+
+        if (hideAddButton) addButton.hide();
+
+        addButton.click(function() {
+            var formCount = parseInt(totalForms.val()),
+                row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
+                buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this),
+                delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
+            applyExtraClasses(row, formCount);
+            row.insertBefore(buttonRow).show();
+            row.find(childElementSelector).each(function() {
+                updateElementIndex($(this), options.prefix, formCount);
+            });
+            totalForms.val(formCount + 1);
+            // Check if we're above the minimum allowed number of forms -> show all delete link(s)
+            if (showDeleteLinks()){
+                $('a.' + delCssSelector).each(function(){$(this).show();});
+            }
+            // Check if we've exceeded the maximum allowed number of forms:
+            if (!showAddButton()) buttonRow.hide();
+            // If a post-add callback was supplied, call it with the added form:
+            if (options.added) options.added(row);
+            return false;
+        });
 
         return $$;
     };
