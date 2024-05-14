@@ -152,6 +152,14 @@
             template.find(childElementSelector).each(function() {
                 updateElementIndex($(this), options.prefix, '__prefix__');
             });
+            
+            // remove default DELETE checkbox:
+            del = template.find('input:hidden[id $= "-DELETE"]')
+            if (del) {
+                $('label[for="' + del.attr('id') + '"]').remove();
+                del.remove();
+            }
+            
             insertDeleteLink(template);
         } else {
             // Otherwise, use the last form in the formset; this works much better if you've got
