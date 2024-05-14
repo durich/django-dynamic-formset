@@ -199,7 +199,7 @@
         addButton.click(function() {
             var formCount = parseInt(totalForms.val()),
                 row = options.formTemplate.clone(true).removeClass('formset-custom-template'),
-                buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || this),
+                buttonRow = $($(this).parents('tr.' + options.formCssClass + '-add').get(0) || $('[class*="' + options.addContainerClass + '"') || this),
                 delCssSelector = $.trim(options.deleteCssClass).replace(/\s+/g, '.');
             applyExtraClasses(row, formCount);
             row.insertBefore(buttonRow).show();
