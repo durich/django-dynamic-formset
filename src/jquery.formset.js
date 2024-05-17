@@ -91,8 +91,10 @@
                         // and hide it, then let Django handle the deleting:
                         del.val('on');
                         row.hide();
+                        forms = $('.' + options.formCssClass).not(':hidden');
                     } else {
                         row.remove();
+                        forms = $('.' + options.formCssClass).not('.formset-custom-template');
                     }
                     for (var i=0, formCount=forms.length; i<formCount; i++) {
                         // Apply `extraClasses` to form rows so they're nicely alternating:
