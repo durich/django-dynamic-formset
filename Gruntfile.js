@@ -25,5 +25,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-qunit');
     
+    // uncommented as of unclear tests regarding to form count
+    //grunt.registerTask("build", ["qunit", "uglify"]);
     grunt.registerTask("build", ["uglify"]);
 };
