@@ -1,41 +1,47 @@
+# Imports from python.  # NOQA
+from setuptools import setup, find_packages  # NOQA
 import os
-from setuptools import setup, find_packages
 
-with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as readme:
-    README = readme.read()
 
-os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
+DESCRIPTION = 'A lightweight plugin for managing Django formsets with jQuery.'
+
+REPO_URL = 'https://github.com/dallasmorningnews/django-dynamic-formsets'
+
+VERSION = '0.0.8'
+
+
+def read(fname):
+    return open(os.path.join(os.path.dirname(__file__), fname)).read()
+
 
 setup(
-    name='django-dynamic-formset',
-    version=__import__('django-dynamic-formset').__version__,
+    name='django-dynamic-formsets',
+    version=VERSION,
+    description=DESCRIPTION,
+    long_description=read('README.md'),
+    url=REPO_URL,
+    download_url=REPO_URL + '/tarball/' + VERSION,
+    author='Allan James Vestal, The Dallas Morning News',
+    author_email='ajvestal@dallasnews.com',
+    license='BSD',
+    packages=find_packages(exclude=['demo']),
     include_package_data=True,
-    license='BSD License',
-    description='A jQuery plugin that allows you dynamically add new forms to a rendered django formset.',
-    long_description=README,
-    url='https://github.com/durich/django-dynamic-formset',
-    packages=find_packages(),
-    install_requires=['django>=1.7', ],
-    author='Ricardo Guevara',
-    author_email='durich@gmail.com',
+    keywords=['django', 'formset', 'javascript'],
     classifiers=[
+        'Development Status :: 5 - Production/Stable',
         'Environment :: Web Environment',
         'Framework :: Django',
-        'Framework :: Django :: 1.7',
-        'Framework :: Django :: 1.8',
-        'Framework :: Django :: 1.9',
-        'Framework :: Django :: 1.10',
-        'Framework :: Django :: 1.11',
-        'Framework :: Django :: 2.0',
-        'Framework :: Django :: 3.0',
-        'Framework :: Django :: 4.0',
         'Intended Audience :: Developers',
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
+        'Programming Language :: Python :: 2',
+        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3.0',
-        'Topic :: Internet :: WWW/HTTP',
-        'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
+        # 'Programming Language :: Python :: 3',
+        # 'Programming Language :: Python :: 3.1',
+        # 'Programming Language :: Python :: 3.2',
+        # 'Programming Language :: Python :: 3.3',
     ],
+    zip_safe=False,
 )
