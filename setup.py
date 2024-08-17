@@ -7,7 +7,7 @@ DESCRIPTION = 'A lightweight plugin for managing Django formsets with jQuery.'
 
 REPO_URL = 'https://github.com/dallasmorningnews/django-dynamic-formsets'
 
-VERSION = '0.0.8'
+VERSION = '0.0.100'
 
 
 def read(fname):
@@ -21,7 +21,7 @@ setup(
     long_description=read('README.md'),
     url=REPO_URL,
     download_url=REPO_URL + '/tarball/' + VERSION,
-    author='Allan James Vestal, The Dallas Morning News',
+    author='Ricardo Guevara, Zalf, Allan James Vestal, The Dallas Morning News',
     author_email='ajvestal@dallasnews.com',
     license='BSD',
     packages=find_packages(exclude=['demo']),
